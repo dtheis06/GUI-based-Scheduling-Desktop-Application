@@ -14,7 +14,7 @@ public class DBCountries {
         ObservableList<Country> countries = FXCollections.observableArrayList();
         try {
             String sql = "SELECT * from countries";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 int countryID = rs.getInt("Country_ID");

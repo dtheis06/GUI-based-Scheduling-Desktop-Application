@@ -1,7 +1,7 @@
 package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import util.DBConnection;
+import util.JDBC;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -45,7 +45,7 @@ public class DBLogin {
         String passWord = password.getText();
         try {
             String sql = "SELECT * FROM users WHERE User_Name = ? and Password = ?";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1,userName);
             ps.setString(2,passWord);
             ResultSet rs = ps.executeQuery();
