@@ -9,10 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Country;
@@ -29,6 +27,36 @@ public class DBAppointment implements Initializable {
 
     @FXML
     private TableView<Appointment> appointmentTable;
+
+    @FXML
+    private TableColumn<Appointment, Integer> appointmentColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> nameColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> descriptionColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> locationColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> typeColumn;
+
+    @FXML
+    private TableColumn<Appointment, Integer> customerColumn;
+
+    @FXML
+    private TableColumn<Appointment, Integer> userColumn;
+
+    @FXML
+    private TableColumn<Appointment, Integer> contactColumn;
+
+    @FXML
+    private TableColumn<Appointment, Timestamp> startColumn;
+
+    @FXML
+    private TableColumn<Appointment, Timestamp> endColumn;
 
     @FXML
     private Button addButton;
@@ -57,7 +85,16 @@ public class DBAppointment implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appointmentTable.setItems(Appointment.getAllAppointments());
-
+        appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        endColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactID"));
     }
 
 

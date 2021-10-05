@@ -13,15 +13,16 @@
    <children>
       <TableView fx:id="appointmentTable" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
         <columns>
-          <TableColumn prefWidth="85.0" text="App ID" />
-          <TableColumn prefWidth="75.0" text="Title" />
-            <TableColumn prefWidth="135.0" text="Description" />
-            <TableColumn prefWidth="75.0" text="Location" />
-            <TableColumn prefWidth="75.0" text="Contact" />
-            <TableColumn prefWidth="75.0" text="Type" />
-            <TableColumn prefWidth="85.0" text="Start" />
-            <TableColumn prefWidth="85.0" text="End" />
-            <TableColumn prefWidth="85.0" text="Customer ID" />
+          <TableColumn fx:id="appointmentColumn" prefWidth="99.0" text="Appointment" />
+          <TableColumn fx:id="nameColumn" prefWidth="61.0" text="Name" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="90.0" text="Description" />
+            <TableColumn fx:id="locationColumn" prefWidth="66.0" text="Location" />
+            <TableColumn fx:id="typeColumn" prefWidth="50.0" text="Type" />
+            <TableColumn fx:id="customerColumn" prefWidth="84.0" text="Customer" />
+            <TableColumn fx:id="userColumn" prefWidth="63.0" text="User" />
+            <TableColumn fx:id="contactColumn" prefWidth="84.0" text="Contact" />
+            <TableColumn fx:id="startColumn" prefWidth="88.0" text="Start" />
+            <TableColumn fx:id="endColumn" prefWidth="89.0" text="End" />
         </columns>
       </TableView>
       <Button fx:id="addButton" layoutX="820.0" layoutY="245.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="128.0" text="Add" AnchorPane.rightAnchor="52.0">
