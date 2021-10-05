@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #c1dde5;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #c1dde5;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.DBAppointment">
    <children>
       <TableView fx:id="appointmentTable" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
         <columns>
@@ -45,7 +44,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="logoutButton" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="128.0" text="Logout">
+      <Button fx:id="logoutButton" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" onAction="#setLogoutButton" prefHeight="44.0" prefWidth="128.0" text="Logout">
          <font>
             <Font size="18.0" />
          </font>
