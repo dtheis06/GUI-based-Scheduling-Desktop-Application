@@ -109,5 +109,13 @@ public class DBAppointment implements Initializable {
             e.getStackTrace();
         }
     }
+
+    public void setAddButton(ActionEvent event) throws Exception {
+        Parent parent = FXMLLoader.load(getClass().getResource("/Fxml/AddAppointment.fxml"));
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+    }
 }
 
