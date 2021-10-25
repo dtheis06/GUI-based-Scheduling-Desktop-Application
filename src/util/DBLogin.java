@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class DBLogin {
+    static String user = "unknown";
 
     @FXML
     private AnchorPane bottomWindow;
@@ -58,6 +59,7 @@ public class DBLogin {
                 errorLabel.setText("Incorrect username/password");
             }
             else{
+                user = username.getText();
                 Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Appointments.fxml"));
                 Scene scene = new Scene(parent);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

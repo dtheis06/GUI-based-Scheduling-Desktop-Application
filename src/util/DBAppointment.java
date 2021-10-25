@@ -95,6 +95,7 @@ public class DBAppointment implements Initializable {
         customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         userColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+
     }
 
 
@@ -111,11 +112,28 @@ public class DBAppointment implements Initializable {
     }
 
     public void setAddButton(ActionEvent event) throws Exception {
-        Parent parent = FXMLLoader.load(getClass().getResource("/Fxml/AddAppointment.fxml"));
-        Scene scene = new Scene(parent);
+        FXMLLoader fxmlLoader;
+        fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/AddAppointment.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        Scene scene = new Scene(root1);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
+        refresh();
+
+    }
+    public void refresh() {
+        appointmentTable.setItems(Appointment.getAllAppointments());
+        appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startColumn.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        endColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactID"));
     }
 }
 

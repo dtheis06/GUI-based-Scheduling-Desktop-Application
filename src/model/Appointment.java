@@ -39,7 +39,7 @@ public class Appointment {
     }
 
     public static ObservableList<Appointment> getAllAppointments() {
-        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try{
             String sql = "SELECT * from appointments";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
