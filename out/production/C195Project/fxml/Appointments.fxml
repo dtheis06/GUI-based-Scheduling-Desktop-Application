@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.DBAppointment">
+   <children>
+      <TableView fx:id="appointmentTable" fixedCellSize="50.0" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
+        <columns>
+          <TableColumn fx:id="appointmentColumn" prefWidth="40.0" style="-fx-alignment: CENTER;" text="ID" />
+          <TableColumn fx:id="nameColumn" style="-fx-alignment: CENTER;" text="Name" />
+            <TableColumn fx:id="locationColumn" style="-fx-alignment: CENTER;" text="Location" />
+            <TableColumn fx:id="typeColumn" style="-fx-alignment: CENTER;" text="Type" />
+            <TableColumn fx:id="customerColumn" prefWidth="60.0" style="-fx-alignment: CENTER;" text="Customer" />
+            <TableColumn fx:id="userColumn" prefWidth="60.0" style="-fx-alignment: CENTER;" text="User" />
+            <TableColumn fx:id="contactColumn" prefWidth="60.0" style="-fx-alignment: CENTER;" text="Contact" />
+            <TableColumn fx:id="startColumn" prefWidth="110.0" style="-fx-alignment: CENTER;" text="Start" />
+            <TableColumn fx:id="endColumn" prefWidth="110.0" style="-fx-alignment: CENTER;" text="End" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Description" />
+        </columns>
+      </TableView>
+      <Button fx:id="addButton" layoutX="820.0" layoutY="245.0" mnemonicParsing="false" onAction="#setAddButton" prefHeight="44.0" prefWidth="128.0" text="Add" AnchorPane.rightAnchor="52.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="editButton" layoutX="820.0" layoutY="345.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="128.0" text="Edit" AnchorPane.rightAnchor="52.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteButton" layoutX="822.0" layoutY="445.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="128.0" text="Delete" AnchorPane.rightAnchor="52.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="customerRecordsButton" layoutX="779.0" layoutY="23.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="193.0" text="Customer Records" AnchorPane.rightAnchor="28.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="logoutButton" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" onAction="#setLogoutButton" prefHeight="44.0" prefWidth="128.0" text="Logout">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="328.0" layoutY="41.0" text="Appointments" textFill="WHITE" AnchorPane.leftAnchor="328.0" AnchorPane.rightAnchor="446.0">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="784.0" layoutY="97.0" prefHeight="105.0" prefWidth="200.0" style="-fx-background-color: #10141e;" AnchorPane.rightAnchor="16.0">
+         <children>
+            <RadioButton fx:id="monthRadio" layoutX="100.0" layoutY="68.0" mnemonicParsing="false" text="Month" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="filterToggle" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="weekRadio" layoutX="14.0" layoutY="68.0" mnemonicParsing="false" selected="true" text="Week" textFill="WHITE" toggleGroup="$filterToggle">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </RadioButton>
+            <Label layoutX="58.0" layoutY="24.0" text="Filter By" textFill="#fffbfb">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
