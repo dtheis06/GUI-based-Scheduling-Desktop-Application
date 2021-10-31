@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.DBAppointment">
    <children>
-      <TableView fx:id="appointmentTable" fixedCellSize="50.0" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
+      <TableView fx:id="appointmentTable" fixedCellSize="50.0" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
         <columns>
           <TableColumn fx:id="appointmentColumn" prefWidth="40.0" style="-fx-alignment: CENTER;" text="ID" />
           <TableColumn fx:id="nameColumn" style="-fx-alignment: CENTER;" text="Name" />
@@ -30,12 +30,12 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="editButton" layoutX="820.0" layoutY="345.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="128.0" text="Edit" AnchorPane.rightAnchor="52.0">
+      <Button fx:id="editButton" layoutX="820.0" layoutY="345.0" mnemonicParsing="false" onAction="#setEditButton" prefHeight="44.0" prefWidth="128.0" text="Edit" AnchorPane.rightAnchor="52.0">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton" layoutX="822.0" layoutY="445.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="128.0" text="Delete" AnchorPane.rightAnchor="52.0">
+      <Button fx:id="deleteButton" layoutX="822.0" layoutY="445.0" mnemonicParsing="false" onAction="#setDeleteButton" prefHeight="44.0" prefWidth="128.0" text="Delete" AnchorPane.rightAnchor="52.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -50,32 +50,28 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="328.0" layoutY="41.0" text="Appointments" textFill="WHITE" AnchorPane.leftAnchor="328.0" AnchorPane.rightAnchor="446.0">
+      <Label layoutX="323.0" layoutY="19.0" text="Appointments" textFill="WHITE" AnchorPane.leftAnchor="323.0" AnchorPane.rightAnchor="451.0">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="784.0" layoutY="97.0" prefHeight="105.0" prefWidth="200.0" style="-fx-background-color: #10141e;" AnchorPane.rightAnchor="16.0">
-         <children>
-            <RadioButton fx:id="monthRadio" layoutX="100.0" layoutY="68.0" mnemonicParsing="false" text="Month" textFill="WHITE">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <toggleGroup>
-                  <ToggleGroup fx:id="filterToggle" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="weekRadio" layoutX="14.0" layoutY="68.0" mnemonicParsing="false" selected="true" text="Week" textFill="WHITE" toggleGroup="$filterToggle">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </RadioButton>
-            <Label layoutX="58.0" layoutY="24.0" text="Filter By" textFill="#fffbfb">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
+      <RadioButton fx:id="weekRadio" layoutX="328.0" layoutY="75.0" mnemonicParsing="false" onAction="#setWeekRadio" selected="true" text="Week" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="filterToggle" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="monthRadio" layoutX="403.0" layoutY="75.0" mnemonicParsing="false" onAction="#setMonthRadio" text="Month" textFill="WHITE" toggleGroup="$filterToggle">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="allRadio" layoutX="491.0" layoutY="75.0" mnemonicParsing="false" onAction="#setAllRadio" text="All" textFill="WHITE" toggleGroup="$filterToggle">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
    </children>
 </AnchorPane>

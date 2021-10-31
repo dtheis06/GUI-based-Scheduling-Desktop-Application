@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="631.0" prefWidth="414.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.AppointmentAddController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="631.0" prefWidth="414.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.AppointmentEditController">
    <children>
-      <Label layoutX="130.0" layoutY="37.0" text="Add Appointment" textFill="WHITE">
+      <Label layoutX="130.0" layoutY="37.0" text="Edit Appointment" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -51,12 +51,12 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="startLabel" layoutX="75.0" layoutY="380.0" text="Start Time" textFill="WHITE">
+      <Label layoutX="75.0" layoutY="380.0" text="Start Time" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="endLabel" layoutX="75.0" layoutY="415.0" text="End Time" textFill="WHITE">
+      <Label layoutX="75.0" layoutY="415.0" text="End Time" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -96,10 +96,10 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <ComboBox fx:id="contactNameCombo" layoutX="197.0" layoutY="308.0" prefHeight="25.0" prefWidth="173.0" promptText="Select" />
-      <DatePicker fx:id="datePicker" layoutX="197.0" layoutY="343.0" prefHeight="25.0" prefWidth="173.0" promptText="00/00/0000" />
-      <ComboBox fx:id="startTimeCombo" layoutX="196.0" layoutY="378.0" prefHeight="25.0" prefWidth="174.0" promptText="Select" />
-      <ComboBox fx:id="endTimeCombo" layoutX="196.0" layoutY="413.0" prefHeight="25.0" prefWidth="174.0" promptText="Select" />
+      <ComboBox fx:id="contactNameCombo" layoutX="197.0" layoutY="308.0" prefHeight="25.0" prefWidth="173.0" />
+      <DatePicker fx:id="datePicker" layoutX="197.0" layoutY="343.0" prefHeight="25.0" prefWidth="173.0" />
+      <ComboBox fx:id="startTimeCombo" layoutX="196.0" layoutY="378.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="endTimeCombo" layoutX="196.0" layoutY="413.0" prefHeight="25.0" prefWidth="174.0" />
       <TextArea fx:id="descriptionText" layoutX="196.0" layoutY="450.0" prefHeight="80.0" prefWidth="197.0">
          <font>
             <Font size="14.0" />

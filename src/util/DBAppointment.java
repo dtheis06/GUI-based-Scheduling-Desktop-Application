@@ -82,9 +82,12 @@ public class DBAppointment implements Initializable {
     @FXML
     private RadioButton weekRadio;
 
+    @FXML
+    private RadioButton allRadio;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        appointmentTable.setItems(Appointment.getAllAppointments());
+        appointmentTable.setItems(Appointment.getAppointmentsForWeek());
         appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -114,16 +117,77 @@ public class DBAppointment implements Initializable {
     public void setAddButton(ActionEvent event) throws Exception {
         FXMLLoader fxmlLoader;
         fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/AddAppointment.fxml"));
-        Parent root1 = (Parent) fxmlLoader.load();
+        Parent root1 = fxmlLoader.load();
         Scene scene = new Scene(root1);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.showAndWait();
         refresh();
+    }
 
+    public void setEditButton(ActionEvent event) throws Exception {
+        try {
+            FXMLLoader fxmlLoader;
+            fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/EditAppointment.fxml"));
+            Parent root1 = fxmlLoader.load();
+
+            Appointment appointment = appointmentTable.getSelectionModel().getSelectedItem();
+            System.out.println("Appointment id " + appointment.getAppointmentID());
+            int index = appointmentTable.getSelectionModel().getSelectedIndex();
+            AppointmentEditController editController = fxmlLoader.getController();
+            editController.initData(appointment, index);
+            Scene scene = new Scene(root1);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.showAndWait();
+            refresh();
+        } catch(NullPointerException e) {
+        }
+    }
+    public void setDeleteButton() {
+        try{
+            Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+            int id = selectedAppointment.getAppointmentID();
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setTitle("Delete appointment \"" + appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID() + "\"?");
+            a.setHeaderText("Delete appointment \"" + appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID() + "\"?");
+            a.setContentText("Are you sure you want to delete this Appointment?");
+            a.showAndWait();
+            if (a.getResult() == ButtonType.OK) {
+                String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
+                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+                ps.setInt(1,id);
+                ps.executeUpdate();
+                refresh();
+            } else {
+                a.close();
+            }
+        } catch(NullPointerException e) {
+        } catch(SQLException e) {
+        }
+    }
+    @FXML
+    public void setWeekRadio() {
+        appointmentTable.setItems(Appointment.getAppointmentsForWeek());
+    }
+    @FXML
+    public void setMonthRadio() {
+        appointmentTable.setItems(Appointment.getAppointmentsForMonth());
+    }
+    @FXML
+    public void setAllRadio() {
+        appointmentTable.setItems(Appointment.getAllAppointments());
     }
     public void refresh() {
-        appointmentTable.setItems(Appointment.getAllAppointments());
+        if (weekRadio.isSelected()) {
+            appointmentTable.setItems(Appointment.getAppointmentsForWeek());
+        }
+        else if(monthRadio.isSelected()) {
+            appointmentTable.setItems(Appointment.getAppointmentsForMonth());
+        }
+        else if(allRadio.isSelected()) {
+            appointmentTable.setItems(Appointment.getAllAppointments());
+        }
         appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));

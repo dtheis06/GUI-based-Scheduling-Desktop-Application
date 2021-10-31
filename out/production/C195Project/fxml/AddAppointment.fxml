@@ -51,12 +51,12 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="380.0" text="Start Time" textFill="WHITE">
+      <Label fx:id="startLabel" layoutX="75.0" layoutY="380.0" text="Start Time" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="75.0" layoutY="415.0" text="End Time" textFill="WHITE">
+      <Label fx:id="endLabel" layoutX="75.0" layoutY="415.0" text="End Time" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

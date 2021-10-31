@@ -204,9 +204,9 @@ public class AppointmentAddController implements Initializable {
                     sTime3 = aTime3.minusHours(12).toString() + " PM";
                 }
                 if (aTime3.getHour() == 12) {
-                    sTime3 = aTime3.toString() + " PM";
+                    sTime3 = aTime3 + " PM";
                 } else if (aTime3.getHour() < 12) {
-                    sTime3 = aTime3.toString() + " AM";
+                    sTime3 = aTime3 + " AM";
                 }
                 startTimes.add(aTime3);
                 stringStartTimes.add(sTime3);
