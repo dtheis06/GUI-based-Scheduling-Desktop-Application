@@ -4,27 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.Appointment;
 import model.Contact;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 public class AppointmentAddController implements Initializable {
     int incrementID = 0;
@@ -100,7 +88,7 @@ public class AppointmentAddController implements Initializable {
 
     public void setSaveButton(ActionEvent event) throws Exception {
         try {
-        String user = DBLogin.user;
+        String user = LoginController.user;
         String title = nameText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
@@ -237,6 +225,10 @@ public class AppointmentAddController implements Initializable {
         catch(NumberFormatException e){
             error = true;
         }
+    }
+    public void setCancel() {
+        Stage stage = (Stage) cancelButton.getScene().getWindow(); //gets the stage
+        stage.close(); // closes it
     }
 }
 

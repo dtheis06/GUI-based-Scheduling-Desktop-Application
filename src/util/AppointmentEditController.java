@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -15,13 +14,11 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 
-import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
-import java.util.ResourceBundle;
 
 public class AppointmentEditController{
     //todo right now it doesn't update, it just creates a new appointment. fix
@@ -107,7 +104,7 @@ public class AppointmentEditController{
     @FXML
     public void setSaveButton(ActionEvent event) throws Exception {
         try {
-            String user = DBLogin.user;
+            String user = LoginController.user;
             String title = nameText.getText();
             String description = descriptionText.getText();
             String location = locationText.getText();
@@ -292,5 +289,9 @@ public class AppointmentEditController{
         Timestamp timestamp = selectedAppointment.getEndTime();
         LocalDate date = timestamp.toLocalDateTime().toLocalDate();
         datePicker.setValue(date);
+    }
+    public void setCancel() {
+        Stage stage = (Stage) cancelButton.getScene().getWindow(); //gets the stage
+        stage.close(); // closes it
     }
 }

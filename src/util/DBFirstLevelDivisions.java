@@ -2,39 +2,41 @@ package util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Country;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBCountries {
+public class DBFirstLevelDivisions {
 
-    public static ObservableList<String> getAllCountries() {
-        ObservableList<String> countries = FXCollections.observableArrayList();
+
+    public static ObservableList<String> getStates(int countryID) {
+        ObservableList<String> states = FXCollections.observableArrayList();
         try {
-            String sql = "SELECT Country from countries";
+            String sql = "SELECT Division from first_level_divisions WHERE " +
+                    "Country_ID = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1,countryID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                String countryName = rs.getString("Country");
-                countries.add(countryName);
+                String stateName = rs.getString("Division");
+                states.add(stateName);
             }
         } catch(SQLException e) {
             e.printStackTrace();
         }
-        return countries;
+        return states;
     }
-    public static int getCountryID(String countryName) {
+    public static int getStateID(String stateName) {
         int id = 0;
         try {
-            String sql = "SELECT Country_ID from countries " +
-                    "WHERE Country = ?";
+            String sql = "SELECT Division_ID from first_level_divisions " +
+                    "WHERE Division = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, countryName);
+            ps.setString(1, stateName);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                id = rs.getInt("Country_ID");
+                id = rs.getInt("Division_ID");
             }
         } catch (SQLException e) {
             e.printStackTrace();

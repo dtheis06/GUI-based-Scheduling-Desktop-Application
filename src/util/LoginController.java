@@ -24,7 +24,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-public class DBLogin {
+public class LoginController {
     static String user = "unknown";
 
     @FXML

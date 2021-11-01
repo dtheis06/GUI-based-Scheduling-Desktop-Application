@@ -109,7 +109,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="cancelButton" cancelButton="true" layoutX="215.0" layoutY="573.0" mnemonicParsing="false" prefWidth="80.0" text="Cancel">
+      <Button fx:id="cancelButton" cancelButton="true" layoutX="215.0" layoutY="573.0" mnemonicParsing="false" onAction="#setCancel" prefWidth="80.0" text="Cancel">
          <font>
             <Font size="14.0" />
          </font></Button>

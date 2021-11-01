@@ -7,24 +7,17 @@ public class Customer {
     int customerID;
     String name;
     String address;
-    int postalCode;
+    String postalCode;
     String phoneNumber;
-    Timestamp creationDate;
-    String createdBy; //todo change to user
-    Timestamp lastUpdated;
-    String lastUpdatedBy; //todo change to user
     int divisionID;
 
-    public Customer() {
-        name = "empty";
-        address = "empty";
-        postalCode = -1;
-        phoneNumber = "empty";
-        divisionID = -1;
-        //todo Timestamps creationDate and lastUpdated
-        createdBy = "notsetup";
-        lastUpdatedBy = "notsetup";
-        //todo customerId autogenerate
+    public Customer(int customerID,String name, String address, String postalCode, String phoneNumber, int divisionID) {
+        this.customerID = customerID;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.divisionID = divisionID;
     }
     public int getCustomerID() {
         return customerID;
@@ -50,11 +43,11 @@ public class Customer {
         this.address = address;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -64,38 +57,6 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Timestamp getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
     }
 
     public int getDivisionID() {

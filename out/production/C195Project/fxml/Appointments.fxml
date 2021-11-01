@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.DBAppointment">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.AppointmentsController">
    <children>
-      <TableView fx:id="appointmentTable" fixedCellSize="50.0" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
+      <TableView fx:id="appointmentTable" fixedCellSize="50.0" layoutX="-3.0" layoutY="111.0" prefHeight="639.0" prefWidth="775.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="111.0">
         <columns>
           <TableColumn fx:id="appointmentColumn" prefWidth="40.0" style="-fx-alignment: CENTER;" text="ID" />
           <TableColumn fx:id="nameColumn" style="-fx-alignment: CENTER;" text="Name" />
@@ -40,7 +40,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="customerRecordsButton" layoutX="779.0" layoutY="23.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="193.0" text="Customer Records" AnchorPane.rightAnchor="28.0">
+      <Button fx:id="customerRecordsButton" layoutX="779.0" layoutY="23.0" mnemonicParsing="false" onAction="#setCustomerRecordsButton" prefHeight="44.0" prefWidth="193.0" text="Customer Records" AnchorPane.rightAnchor="28.0">
          <font>
             <Font size="18.0" />
          </font>
