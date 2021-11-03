@@ -43,4 +43,36 @@ public class DBFirstLevelDivisions {
         }
         return id;
     }
+    public static String getStateName(int stateID) {
+        String state = "";
+        try {
+            String sql = "SELECT Division from first_level_divisions " +
+                    "WHERE Division_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, stateID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                state = rs.getString("Division");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return state;
+    }
+    public static int countryIDFromStateID(int stateID) {
+        int countryID = 0;
+        try {
+            String sql = "SELECT Country_ID FROM first_level_divisions " +
+                    "WHERE Division_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, stateID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                countryID = rs.getInt("Country_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return countryID;
+    }
 }

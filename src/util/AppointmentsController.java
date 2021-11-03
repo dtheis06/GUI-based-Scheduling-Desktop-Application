@@ -87,7 +87,7 @@ public class AppointmentsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        appointmentTable.setItems(DBAppointment.getAppointmentsForWeek());
+        appointmentTable.setItems(DBAppointment.getAllAppointments());
         appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -132,7 +132,6 @@ public class AppointmentsController implements Initializable {
             Parent root1 = fxmlLoader.load();
 
             Appointment appointment = appointmentTable.getSelectionModel().getSelectedItem();
-            System.out.println("Appointment id " + appointment.getAppointmentID());
             int index = appointmentTable.getSelectionModel().getSelectedIndex();
             AppointmentEditController editController = fxmlLoader.getController();
             editController.initData(appointment, index);

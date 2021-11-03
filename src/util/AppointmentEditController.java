@@ -104,6 +104,7 @@ public class AppointmentEditController{
     @FXML
     public void setSaveButton(ActionEvent event) throws Exception {
         try {
+            error = false;
             String user = LoginController.user;
             String title = nameText.getText();
             String description = descriptionText.getText();
@@ -126,12 +127,20 @@ public class AppointmentEditController{
             incrementID();
             errorLabel.setText("");
             if(end.before(start) || end.equals(start)) {
-                errorLabel.setText("The appointment has to end before it starts!");
+                errorLabel.setText("The appointment has to start before it ends!");
                 error = true;
             }
             if(title.isEmpty() || location.isEmpty() || type.isEmpty() || start.equals(null) || end.equals(null) ||
                     customerID.isEmpty() || userID.isEmpty() || contactName.isEmpty()) {
                 errorLabel.setText("Empty text field");
+                error = true;
+            }
+            if(!DBUser.inRange(intUserID)) {
+                errorLabel.setText("User ID doesn't exist");
+                error = true;
+            }
+            if(!DBCustomer.inRange(intCustomerID)) {
+                errorLabel.setText("Customer ID doesn't exist");
                 error = true;
             }
             if(!error) {

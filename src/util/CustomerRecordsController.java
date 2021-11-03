@@ -1,4 +1,6 @@
 package util;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,9 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
@@ -16,6 +16,8 @@ import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
@@ -106,7 +108,8 @@ public class CustomerRecordsController implements Initializable {
                 endColumn.setCellValueFactory(new PropertyValueFactory<>("endTime"));
                 userColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
         }
-        public void setBackButton (ActionEvent event){
+
+        public void setBackButton(ActionEvent event) {
                 try {
                         Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Appointments.fxml"));
                         Scene scene = new Scene(parent);
@@ -117,10 +120,12 @@ public class CustomerRecordsController implements Initializable {
                         e.getStackTrace();
                 }
         }
+
         public void onCustomerSelected() {
                 selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
                 appointmentTable.setItems(DBAppointment.getCustomerAppointments(selectedCustomer.getCustomerID()));
         }
+
         public void setAddCustomer(ActionEvent event) {
                 try {
                         FXMLLoader fxmlLoader;
@@ -135,7 +140,108 @@ public class CustomerRecordsController implements Initializable {
                         e.getStackTrace();
                 }
         }
+
+        public void setEditCustomer(ActionEvent event) throws Exception {
+                try {
+                        FXMLLoader fxmlLoader;
+                        fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/EditCustomer.fxml"));
+                        Parent root1 = fxmlLoader.load();
+
+                        Customer customer = customerTable.getSelectionModel().getSelectedItem();
+                        int index = customerTable.getSelectionModel().getSelectedIndex();
+                        CustomerEditController editController = fxmlLoader.getController();
+                        editController.initData(customer, index);
+                        Scene scene = new Scene(root1);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.showAndWait();
+                        refresh();
+                } catch (NullPointerException e) {
+
+                }
+        }
+
+        public void setDeleteCustomer() {
+                try {
+                        Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+                        int id = selectedCustomer.getCustomerID();
+                        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                        a.setTitle("Delete customer \"" + customerTable.getSelectionModel().getSelectedItem().getCustomerID() + "\"?");
+                        a.setHeaderText("Delete customer \"" + customerTable.getSelectionModel().getSelectedItem().getCustomerID() + "\"?");
+                        a.setContentText("Are you sure you want to delete this Customer?");
+                        a.showAndWait();
+                        if (a.getResult() == ButtonType.OK && DBAppointment.hasAppointments(id)) {
+                                Alert b = new Alert(Alert.AlertType.ERROR);
+                                b.setContentText("Customer has appointments and therefore cannot be deleted!");
+                                b.showAndWait();
+                        }
+                        if (a.getResult() == ButtonType.OK && !DBAppointment.hasAppointments(id)) {
+                                String sql = "DELETE FROM customers WHERE Customer_ID = ?";
+                                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+                                ps.setInt(1, id);
+                                ps.executeUpdate();
+                                refresh();
+                        } else {
+                                a.close();
+                        }
+                } catch (NullPointerException e) {
+                } catch (SQLException e) {
+                }
+        }
+
+        public void setAddAppointment() throws Exception{
+                FXMLLoader fxmlLoader;
+                fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/AddAppointment.fxml"));
+                Parent root1 = fxmlLoader.load();
+                Scene scene = new Scene(root1);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.showAndWait();
+                refresh();
+        }
+
+        public void setEditAppointment() throws Exception {
+                try {
+                        FXMLLoader fxmlLoader;
+                        fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/EditAppointment.fxml"));
+                        Parent root1 = fxmlLoader.load();
+
+                        Appointment appointment = appointmentTable.getSelectionModel().getSelectedItem();
+                        int index = appointmentTable.getSelectionModel().getSelectedIndex();
+                        AppointmentEditController editController = fxmlLoader.getController();
+                        editController.initData(appointment, index);
+                        Scene scene = new Scene(root1);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.showAndWait();
+                        refresh();
+                } catch (NullPointerException e) {
+                }
+        }
+        public void setDeleteAppointment() throws Exception {
+                try {
+                        Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+                        int id = selectedAppointment.getAppointmentID();
+                        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                        a.setTitle("Delete appointment \"" + appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID() + "\"?");
+                        a.setHeaderText("Delete appointment \"" + appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID() + "\"?");
+                        a.setContentText("Are you sure you want to delete this Appointment?");
+                        a.showAndWait();
+                        if (a.getResult() == ButtonType.OK) {
+                                String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
+                                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+                                ps.setInt(1, id);
+                                ps.executeUpdate();
+                                refresh();
+                        } else {
+                                a.close();
+                        }
+                } catch (NullPointerException e) {
+                } catch (SQLException e) {
+                }
+        }
         public void refresh() {
                 customerTable.setItems(DBCustomer.getAllCustomers());
+                appointmentTable.setItems(DBAppointment.getCustomerAppointments(selectedCustomer.getCustomerID()));
         }
 }

@@ -88,37 +88,46 @@ public class AppointmentAddController implements Initializable {
 
     public void setSaveButton(ActionEvent event) throws Exception {
         try {
-        String user = LoginController.user;
-        String title = nameText.getText();
-        String description = descriptionText.getText();
-        String location = locationText.getText();
-        String type = typeText.getText();
-        String customerID = customerText.getText();
-        String userID = userText.getText();
-        int intUserID = Integer.parseInt(userID);
-        int intCustomerID = Integer.parseInt(customerID);
-        contactName = contactNameCombo.getSelectionModel().getSelectedItem();
-        int contactID = getContactIDFromContactName();
-        LocalDateTime ldtDate = LocalDateTime.now();
-        Timestamp tsDate = Timestamp.valueOf(ldtDate);
-        int startTimeIndex = startTimeCombo.getSelectionModel().getSelectedIndex();
-        int endTimeIndex = endTimeCombo.getSelectionModel().getSelectedIndex();
-        LocalDateTime ldtStart = LocalDateTime.of(datePicker.getValue(), startTimes.get(startTimeIndex));
-        LocalDateTime ldtEnd = LocalDateTime.of(datePicker.getValue(), endTimes.get(endTimeIndex));
-        Timestamp start = Timestamp.valueOf(ldtStart);
-        Timestamp end = Timestamp.valueOf(ldtEnd);
-        incrementID();
-        errorLabel.setText("");
-            if(end.before(start) || end.equals(start)) {
-                errorLabel.setText("The appointment has to end before it starts!");
-                error = true;
-            }
-            if(title.isEmpty() || location.isEmpty() || type.isEmpty() || start.equals(null) || end.equals(null) ||
-                customerID.isEmpty() || userID.isEmpty() || contactName.isEmpty()) {
-                errorLabel.setText("Empty text field");
-                error = true;
-            }
-            if(!error) {
+            error = false;
+            String user = LoginController.user;
+            String title = nameText.getText();
+            String description = descriptionText.getText();
+            String location = locationText.getText();
+            String type = typeText.getText();
+            String customerID = customerText.getText();
+            String userID = userText.getText();
+            int intUserID = Integer.parseInt(userID);
+            int intCustomerID = Integer.parseInt(customerID);
+            contactName = contactNameCombo.getSelectionModel().getSelectedItem();
+            int contactID = getContactIDFromContactName();
+            LocalDateTime ldtDate = LocalDateTime.now();
+            Timestamp tsDate = Timestamp.valueOf(ldtDate);
+            int startTimeIndex = startTimeCombo.getSelectionModel().getSelectedIndex();
+            int endTimeIndex = endTimeCombo.getSelectionModel().getSelectedIndex();
+            LocalDateTime ldtStart = LocalDateTime.of(datePicker.getValue(), startTimes.get(startTimeIndex));
+            LocalDateTime ldtEnd = LocalDateTime.of(datePicker.getValue(), endTimes.get(endTimeIndex));
+            Timestamp start = Timestamp.valueOf(ldtStart);
+            Timestamp end = Timestamp.valueOf(ldtEnd);
+            incrementID();
+            errorLabel.setText("");
+                if(end.before(start) || end.equals(start)) {
+                    errorLabel.setText("The appointment has to end before it starts!");
+                    error = true;
+                }
+                if(title.isEmpty() || location.isEmpty() || type.isEmpty() || start.equals(null) || end.equals(null) ||
+                    customerID.isEmpty() || userID.isEmpty() || contactName.isEmpty()) {
+                    errorLabel.setText("Empty text field");
+                    error = true;
+                }
+                if(!DBUser.inRange(intUserID)) {
+                    errorLabel.setText("User ID doesn't exist");
+                    error = true;
+                }
+                if(!DBCustomer.inRange(intCustomerID)) {
+                    errorLabel.setText("Customer ID doesn't exist");
+                    error = true;
+                }
+                if(!error) {
                     String sql2 = "INSERT INTO appointments(Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
                             "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     PreparedStatement ps = JDBC.getConnection().prepareStatement(sql2);
@@ -139,16 +148,16 @@ public class AppointmentAddController implements Initializable {
                     ps.execute();
                     Stage stage = (Stage) saveButton.getScene().getWindow(); //gets the stage
                     stage.close(); // closes it
-            }
-            } catch(NumberFormatException e) { //handles NumberFormatException
-                    errorLabel.setText("Number Format Error " + e.getMessage());
-                    error = true;
-            } catch(IndexOutOfBoundsException e) { //handles IndexOutOfBoundsException
-                    errorLabel.setText("Something is missing " + e.getMessage());
-                    error = true;
-            } catch(NullPointerException e) { //handles NullPointerException
-                    errorLabel.setText("NullPointerError " + e.getMessage());
-                    error = true;
+                }
+        } catch(NumberFormatException e) { //handles NumberFormatException
+                        errorLabel.setText("Number Format Error " + e.getMessage());
+                        error = true;
+        } catch(IndexOutOfBoundsException e) { //handles IndexOutOfBoundsException
+                        errorLabel.setText("Something is missing " + e.getMessage());
+                        error = true;
+        } catch(NullPointerException e) { //handles NullPointerException
+                        errorLabel.setText("NullPointerError " + e.getMessage());
+                        error = true;
         }
     }
 

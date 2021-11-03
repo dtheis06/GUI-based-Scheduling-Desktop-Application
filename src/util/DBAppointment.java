@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class DBAppointment {
 
@@ -130,5 +131,22 @@ public class DBAppointment {
             e.printStackTrace();
         }
         return appointments;
+    }
+    public static boolean hasAppointments(int customerID) {
+        boolean hasAps = false;
+        try{
+            String sql = "SELECT * " +
+                    "FROM appointments " +
+                    "WHERE Customer_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, customerID);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                hasAps = true;
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return hasAps;
     }
 }

@@ -41,4 +41,20 @@ public class DBCountries {
         }
         return id;
     }
+    public static String getCountryName(int countryID) {
+        String name = "";
+        try {
+            String sql = "SELECT Country from countries " +
+                    "WHERE Country_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1, countryID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("Country");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
 }

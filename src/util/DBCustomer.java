@@ -34,4 +34,19 @@ public class DBCustomer {
         }
         return customers;
     }
+    public static boolean inRange(int value) {
+        boolean flag = false;
+        try {
+            String sql = "SELECT * FROM customers WHERE Customer_ID = ? ";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1,value);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                flag = true;
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
 }
