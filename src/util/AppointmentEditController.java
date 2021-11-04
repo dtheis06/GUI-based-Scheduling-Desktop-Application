@@ -87,7 +87,7 @@ public class AppointmentEditController{
         selectedAppointment = appointment;
         populateStartTimes();
         populateEndTimes();
-        contactNameCombo.setItems(Contact.getContactNames());
+        contactNameCombo.setItems(DBContact.getContactNames());
         endTimeCombo.setItems(stringEndTimes);
         startTimeCombo.setItems(stringStartTimes);
         intAppointmentID = selectedAppointment.getAppointmentID();
@@ -119,7 +119,7 @@ public class AppointmentEditController{
             int intUserID = Integer.parseInt(userID);
             intCustomerID = Integer.parseInt(customerID);
             contactName = contactNameCombo.getSelectionModel().getSelectedItem();
-            int contactID = getContactIDFromContactName();
+            int contactID = DBContact.getContactIDFromContactName(contactName);
             LocalDateTime ldtDate = LocalDateTime.now();
             Timestamp tsDate = Timestamp.valueOf(ldtDate);
             int startTimeIndex = startTimeCombo.getSelectionModel().getSelectedIndex();
@@ -196,22 +196,6 @@ public class AppointmentEditController{
         } catch (SQLException e) {
             e.getStackTrace();
         }
-    }
-
-    private int getContactIDFromContactName() {
-        int contactID = 999;
-        try {
-            String sql = "SELECT Contact_ID from contacts WHERE Contact_Name = ?";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, contactName);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                contactID = rs.getInt("Contact_ID");
-            }
-        } catch (SQLException e) {
-            e.getStackTrace();
-        }
-        return contactID;
     }
     public void setContactName() {
         try {

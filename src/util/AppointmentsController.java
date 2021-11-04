@@ -96,6 +96,10 @@ public class AppointmentsController implements Initializable {
     @FXML
     private RadioButton allRadio;
 
+    @FXML
+    private Button logsButton;
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appointmentTable.setItems(DBAppointment.getAllAppointments());
@@ -165,7 +169,7 @@ public class AppointmentsController implements Initializable {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setTitle("Delete appointment \"" + appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID() + "\"?");
             a.setHeaderText("Delete appointment \"" + appointmentTable.getSelectionModel().getSelectedItem().getAppointmentID() + "\"?");
-            a.setContentText("Are you sure you want to delete this Appointment?");
+            a.setContentText("Are you sure you want to delete this \"" + appointmentTable.getSelectionModel().getSelectedItem().getType() + "\"?");
             a.showAndWait();
             if (a.getResult() == ButtonType.OK) {
                 String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
@@ -219,36 +223,51 @@ public class AppointmentsController implements Initializable {
         }
     }
     public static void upcomingAppointmentCheck() {
-        LocalDateTime ldtNow = LocalDateTime.now();
         try {
             String sql = "SELECT Start, Appointment_ID " +
-                    "FROM appointments ";
+                    "FROM appointments WHERE Start Between ? AND ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now().plusMinutes(15)));
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            if(rs.next()) {
                 Timestamp dbTimestamp = rs.getTimestamp("Start");
                 int appointmentID = rs.getInt("Appointment_ID");
                 LocalDateTime dbLDT = dbTimestamp.toLocalDateTime();
-                if(dbLDT.isAfter(ldtNow) && dbLDT.isBefore(ldtNow.plusMinutes(15))) {
-                    LocalTime dbLT = dbLDT.toLocalTime();
-                    String dbLTString = "";
-                    if (dbLT.getHour() > 12) {
-                        dbLTString = dbLT.minusHours(12).toString() + " PM";
-                    }
-                    if (dbLT.getHour() == 12) {
-                        dbLTString = dbLT + " PM";
-                    } else if (dbLT.getHour() < 12) {
-                        dbLTString = dbLT + " AM";
-                    }
+                LocalTime dbLT = dbLDT.toLocalTime();
+                String dbLTString = "";
+                if (dbLT.getHour() > 12) {
+                    dbLTString = dbLT.minusHours(12).toString() + " PM";
+                }
+                if (dbLT.getHour() == 12) {
+                    dbLTString = dbLT + " PM";
+                } else if (dbLT.getHour() < 12) {
+                    dbLTString = dbLT + " AM";
+                }
+                Alert b = new Alert(Alert.AlertType.INFORMATION);
+                b.setHeaderText("Upcoming appointment");
+                b.setContentText("Appointment " + appointmentID + " is at " + dbLTString);
+                b.show();
+            }
+                else{
                     Alert b = new Alert(Alert.AlertType.INFORMATION);
-                    b.setHeaderText("Upcoming appointment");
-                    b.setContentText("Appointment " + appointmentID + " is at " + dbLTString);
+                    b.setHeaderText("");
+                    b.setContentText("No upcoming appointments");
                     b.show();
                 }
-
-            }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public void setLogsButton(ActionEvent event) {
+        try{
+            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Logs.fxml"));
+            Scene scene = new Scene(parent);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.getStackTrace();
         }
     }
 }

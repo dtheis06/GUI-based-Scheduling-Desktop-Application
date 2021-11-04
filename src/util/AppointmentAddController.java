@@ -83,7 +83,7 @@ public class AppointmentAddController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         populateStartTimes();
         populateEndTimes();
-        contactNameCombo.setItems(Contact.getContactNames());
+        contactNameCombo.setItems(DBContact.getContactNames());
         endTimeCombo.setItems(stringEndTimes);
         startTimeCombo.setItems(stringStartTimes);
     }
@@ -101,7 +101,7 @@ public class AppointmentAddController implements Initializable {
             int intUserID = Integer.parseInt(userID);
             intCustomerID = Integer.parseInt(customerID);
             contactName = contactNameCombo.getSelectionModel().getSelectedItem();
-            int contactID = getContactIDFromContactName();
+            int contactID = DBContact.getContactIDFromContactName(contactName);
             LocalDateTime ldtDate = LocalDateTime.now();
             Timestamp tsDate = Timestamp.valueOf(ldtDate);
             int startTimeIndex = startTimeCombo.getSelectionModel().getSelectedIndex();
@@ -178,21 +178,6 @@ public class AppointmentAddController implements Initializable {
         }
     }
 
-    private int getContactIDFromContactName() {
-        int contactID = 999;
-        try {
-            String sql = "SELECT Contact_ID from contacts WHERE Contact_Name = ?";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setString(1, contactName);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                contactID = rs.getInt("Contact_ID");
-            }
-        } catch (SQLException e) {
-            e.getStackTrace();
-        }
-        return contactID;
-    }
     private void populateStartTimes() throws NumberFormatException {
         try{
             for (int i = 0; i < 56; i++) {

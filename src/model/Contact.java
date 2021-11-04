@@ -21,21 +21,6 @@ public class Contact {
         this.name = name;
         this.email = email;
     }
-    public static ObservableList<String> getContactNames() {
-        ObservableList<String> contactNames = FXCollections.observableArrayList();
-        try{
-            String sql = "SELECT Contact_Name from contacts";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                String name = rs.getString("Contact_Name");
-                contactNames.add(name);
-            }
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
-            return contactNames;
-    }
 
     public int getContactID() {
         return contactID;

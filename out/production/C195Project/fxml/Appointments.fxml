@@ -73,5 +73,10 @@
             <Font size="14.0" />
          </font>
       </RadioButton>
+      <Button fx:id="logsButton" layoutX="835.0" layoutY="669.0" mnemonicParsing="false" onAction="#setLogsButton" prefHeight="44.0" prefWidth="128.0" text="Logs">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
