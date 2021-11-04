@@ -7,11 +7,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.JDBC;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+        Locale currentLocale = Locale.getDefault();
+        //Locale currentLocale = Locale.CANADA_FRENCH;
+        ResourceBundle bundle = ResourceBundle.getBundle("Properties.C195", currentLocale);
+        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"), bundle);
         Scene scene = new Scene(parent);
         primaryStage.setScene(scene);
         primaryStage.show();

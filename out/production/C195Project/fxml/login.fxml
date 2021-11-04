@@ -9,28 +9,33 @@
 
 <AnchorPane fx:id="bottomWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="728.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.LoginController">
    <children>
-      <Label layoutX="103.0" layoutY="197.0" text="Username" textFill="WHITE" AnchorPane.leftAnchor="103.0" AnchorPane.rightAnchor="512.0">
+      <Label fx:id="userNameLabel" layoutX="47.0" layoutY="206.0" prefHeight="27.0" prefWidth="184.0" text="%Username" textFill="WHITE" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="497.0">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label layoutX="107.0" layoutY="285.0" text="Password" textFill="WHITE" AnchorPane.leftAnchor="103.0" AnchorPane.rightAnchor="514.0">
+      <Label fx:id="passwordLabel" layoutX="48.0" layoutY="274.0" prefHeight="27.0" prefWidth="174.0" text="%Password" textFill="WHITE" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="506.0">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="19.0" />
          </font>
       </Label>
       <TextField fx:id="username" layoutX="250.0" layoutY="197.0" prefHeight="45.0" prefWidth="311.0" AnchorPane.rightAnchor="167.0" />
       <PasswordField fx:id="password" layoutX="250.0" layoutY="269.0" prefHeight="45.0" prefWidth="311.0" />
-      <Button fx:id="login" layoutX="250.0" layoutY="365.0" mnemonicParsing="false" onAction="#setLogin" prefHeight="35.0" prefWidth="148.0" text="Login" AnchorPane.rightAnchor="330.0" />
-      <Button fx:id="cancel" layoutX="421.0" layoutY="365.0" mnemonicParsing="false" onAction="#setCancel" prefHeight="35.0" prefWidth="148.0" text="Cancel" AnchorPane.rightAnchor="159.0" />
-      <Label fx:id="errorLabel" layoutX="269.0" layoutY="331.0" textFill="#8d0000">
+      <Button fx:id="login" layoutX="250.0" layoutY="365.0" mnemonicParsing="false" onAction="#setLogin" prefHeight="35.0" prefWidth="148.0" text="%LoginButton" AnchorPane.rightAnchor="330.0" />
+      <Button fx:id="cancel" layoutX="421.0" layoutY="365.0" mnemonicParsing="false" onAction="#setCancel" prefHeight="35.0" prefWidth="148.0" text="%CancelButton" AnchorPane.rightAnchor="159.0" />
+      <Label fx:id="errorLabel" layoutX="269.0" layoutY="331.0" text="%ErrorLabel" textFill="#8d0000">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="151.0" layoutY="78.0" text="Business Name" textFill="WHITE" AnchorPane.leftAnchor="103.0" AnchorPane.rightAnchor="322.0">
+      <Label fx:id="loginLabel" layoutX="47.0" layoutY="75.0" text="%Login" textFill="WHITE" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="378.0">
          <font>
             <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="zoneLabel" alignment="CENTER" layoutX="398.0" layoutY="422.0" text="%Region" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="16.0" />
          </font>
       </Label>
    </children>

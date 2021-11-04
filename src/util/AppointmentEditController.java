@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.time.*;
 
 public class AppointmentEditController{
-    //todo right now it doesn't update, it just creates a new appointment. fix
     private Appointment selectedAppointment;
     private int selectedIndex;
     int incrementID = 0;
@@ -36,6 +35,10 @@ public class AppointmentEditController{
     ZoneOffset zoneOffset = zdt.getOffset();
     int offSetInHours = zoneOffset.getTotalSeconds() / 3600;
     boolean error = false;
+    private static int intCustomerID;
+    private static Timestamp start;
+    private static Timestamp end;
+    private static int intAppointmentID;
 
     @FXML
     private TextField appointmentText;
@@ -87,8 +90,9 @@ public class AppointmentEditController{
         contactNameCombo.setItems(Contact.getContactNames());
         endTimeCombo.setItems(stringEndTimes);
         startTimeCombo.setItems(stringStartTimes);
+        intAppointmentID = selectedAppointment.getAppointmentID();
 
-        appointmentText.setText(String.valueOf(selectedAppointment.getAppointmentID()));
+        appointmentText.setText(String.valueOf(intAppointmentID));
         nameText.setText(selectedAppointment.getName());
         locationText.setText(selectedAppointment.getLocation());
         typeText.setText(selectedAppointment.getType());
@@ -113,7 +117,7 @@ public class AppointmentEditController{
             String customerID = customerText.getText();
             String userID = userText.getText();
             int intUserID = Integer.parseInt(userID);
-            int intCustomerID = Integer.parseInt(customerID);
+            intCustomerID = Integer.parseInt(customerID);
             contactName = contactNameCombo.getSelectionModel().getSelectedItem();
             int contactID = getContactIDFromContactName();
             LocalDateTime ldtDate = LocalDateTime.now();
@@ -122,10 +126,11 @@ public class AppointmentEditController{
             int endTimeIndex = endTimeCombo.getSelectionModel().getSelectedIndex();
             LocalDateTime ldtStart = LocalDateTime.of(datePicker.getValue(), startTimes.get(startTimeIndex));
             LocalDateTime ldtEnd = LocalDateTime.of(datePicker.getValue(), endTimes.get(endTimeIndex));
-            Timestamp start = Timestamp.valueOf(ldtStart);
-            Timestamp end = Timestamp.valueOf(ldtEnd);
+            start = Timestamp.valueOf(ldtStart);
+            end = Timestamp.valueOf(ldtEnd);
             incrementID();
             errorLabel.setText("");
+            overLappingAppointmentsCheck();
             if(end.before(start) || end.equals(start)) {
                 errorLabel.setText("The appointment has to start before it ends!");
                 error = true;
@@ -251,10 +256,10 @@ public class AppointmentEditController{
     }
     private void populateStartTimes() throws NumberFormatException {
         try{
-            for (int i = 0; i < 28; i++) {
+            for (int i = 0; i < 56; i++) {
                 LocalTime aTime = LocalTime.of(12, 00);
                 LocalTime aTime2 = aTime.plusHours(offSetInHours);
-                LocalTime aTime3 = aTime2.plusMinutes(i * 30);
+                LocalTime aTime3 = aTime2.plusMinutes(i * 15);
                 String sTime3 = "";
                 if (aTime3.getHour() > 12) {
                     sTime3 = aTime3.minusHours(12).toString() + " PM";
@@ -273,10 +278,10 @@ public class AppointmentEditController{
     }
     private void populateEndTimes() throws NumberFormatException {
         try {
-            for (int i = 0; i < 28; i++) {
-                LocalTime aTime = LocalTime.of(12, 30);
+            for (int i = 0; i < 56; i++) {
+                LocalTime aTime = LocalTime.of(12, 15);
                 LocalTime aTime2 = aTime.plusHours(offSetInHours);
-                LocalTime aTime3 = aTime2.plusMinutes(i * 30);
+                LocalTime aTime3 = aTime2.plusMinutes(i * 15);
                 String sTime3 = "";
                 if (aTime3.getHour() > 12) {
                     sTime3 = aTime3.minusHours(12) + " PM";
@@ -302,5 +307,28 @@ public class AppointmentEditController{
     public void setCancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow(); //gets the stage
         stage.close(); // closes it
+    }
+    private void overLappingAppointmentsCheck() {
+        try {
+            String sql = "SELECT Start, End, Appointment_ID FROM appointments " +
+                    "WHERE Customer_ID = ?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ps.setInt(1,intCustomerID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Timestamp dbStart = rs.getTimestamp("Start");
+                Timestamp dbEnd = rs.getTimestamp("End");
+                int appID = rs.getInt("Appointment_ID");
+                if(appID != intAppointmentID) {
+                    if(start.equals(dbStart) || (start.after(dbStart) && start.before(dbEnd)) || (end.after(dbStart) && end.before(dbEnd))
+                            || end.equals(dbEnd)){
+                        error = true;
+                        errorLabel.setText("Error: Overlapping appointments");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.getStackTrace();
+        }
     }
 }

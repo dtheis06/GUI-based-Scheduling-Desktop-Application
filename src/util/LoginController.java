@@ -22,10 +22,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class LoginController {
+public class LoginController implements Initializable {
     static String user = "unknown";
+    ZoneId id = ZoneId.systemDefault();
 
     @FXML
     private AnchorPane bottomWindow;
@@ -45,8 +49,27 @@ public class LoginController {
     @FXML
     private Label errorLabel;
 
-    public void setLogin(ActionEvent event) {
+    @FXML
+    private Label zoneLabel;
 
+    @FXML
+    private Label loginLabel;
+
+    @FXML
+    private Label userNameLabel;
+
+    @FXML
+    private Label passwordLabel;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        errorLabel.setVisible(false);
+        zoneLabel.setText(zoneLabel.getText() + " " + id.toString());
+
+    }
+
+    public void setLogin(ActionEvent event) {
         String userName = username.getText();
         String passWord = password.getText();
         try {
@@ -56,15 +79,17 @@ public class LoginController {
             ps.setString(2,passWord);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
-                errorLabel.setText("Incorrect username/password");
+                errorLabel.setVisible(true);
             }
             else{
+                System.out.println("ZoneID" + id);
                 user = username.getText();
                 Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Appointments.fxml"));
                 Scene scene = new Scene(parent);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
+
             }
         } catch (SQLException e) {
             e.getStackTrace();

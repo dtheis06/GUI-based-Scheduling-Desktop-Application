@@ -21,9 +21,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
+    private static ZoneId z = ZoneId.systemDefault();
+    private static LocalDate ld = LocalDate.now();
+    private static ZonedDateTime zdt = ld.atStartOfDay(z);
+    private static ZoneOffset zoneOffset = zdt.getOffset();
+    private static int offSetInHours = zoneOffset.getTotalSeconds() / 3600;
+    private static int upcomingAppointmentID = 0;
 
     @FXML
     private TableView<Appointment> appointmentTable;
@@ -98,13 +109,16 @@ public class AppointmentsController implements Initializable {
         customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         userColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        upcomingAppointmentCheck();
 
     }
 
 
     public void setLogoutButton(ActionEvent event) {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
+            Locale currentLocale = Locale.getDefault();
+            ResourceBundle bundle = ResourceBundle.getBundle("Properties.C195", currentLocale);
+            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"), bundle);
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -202,6 +216,39 @@ public class AppointmentsController implements Initializable {
 
         } catch (IOException e) {
             e.getStackTrace();
+        }
+    }
+    public static void upcomingAppointmentCheck() {
+        LocalDateTime ldtNow = LocalDateTime.now();
+        try {
+            String sql = "SELECT Start, Appointment_ID " +
+                    "FROM appointments ";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Timestamp dbTimestamp = rs.getTimestamp("Start");
+                int appointmentID = rs.getInt("Appointment_ID");
+                LocalDateTime dbLDT = dbTimestamp.toLocalDateTime();
+                if(dbLDT.isAfter(ldtNow) && dbLDT.isBefore(ldtNow.plusMinutes(15))) {
+                    LocalTime dbLT = dbLDT.toLocalTime();
+                    String dbLTString = "";
+                    if (dbLT.getHour() > 12) {
+                        dbLTString = dbLT.minusHours(12).toString() + " PM";
+                    }
+                    if (dbLT.getHour() == 12) {
+                        dbLTString = dbLT + " PM";
+                    } else if (dbLT.getHour() < 12) {
+                        dbLTString = dbLT + " AM";
+                    }
+                    Alert b = new Alert(Alert.AlertType.INFORMATION);
+                    b.setHeaderText("Upcoming appointment");
+                    b.setContentText("Appointment " + appointmentID + " is at " + dbLTString);
+                    b.show();
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
