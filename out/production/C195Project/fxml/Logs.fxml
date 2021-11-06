@@ -18,7 +18,7 @@
       </Label>
       <ComboBox fx:id="selectYearCombo" layoutX="195.0" layoutY="52.0" onAction="#setLog" prefHeight="39.0" prefWidth="120.0" promptText="Select " />
       <ComboBox fx:id="selectContactCombo" layoutX="195.0" layoutY="52.0" onAction="#setLog" prefHeight="39.0" prefWidth="120.0" promptText="Select " />
-      <TextArea fx:id="textArea" layoutX="314.0" layoutY="139.0" prefHeight="606.0" prefWidth="390.0">
+      <TextArea fx:id="textArea" layoutX="190.0" layoutY="139.0" prefHeight="606.0" prefWidth="635.0">
          <font>
             <Font size="18.0" />
          </font>

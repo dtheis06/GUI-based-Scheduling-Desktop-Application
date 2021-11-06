@@ -29,6 +29,7 @@ public class AppointmentEditController{
     private ObservableList<String> stringStartTimes = FXCollections.observableArrayList();
     private ObservableList<LocalTime> endTimes = FXCollections.observableArrayList();
     private ObservableList<String> stringEndTimes = FXCollections.observableArrayList();
+    private ObservableList<String> types = FXCollections.observableArrayList();
     ZoneId z = ZoneId.systemDefault();
     LocalDate ld = LocalDate.now();
     ZonedDateTime zdt = ld.atStartOfDay(z);
@@ -50,7 +51,7 @@ public class AppointmentEditController{
     private TextField locationText;
 
     @FXML
-    private TextField typeText;
+    private ComboBox<String> typeCombo;
 
     @FXML
     private TextField customerText;
@@ -85,6 +86,8 @@ public class AppointmentEditController{
     public void initData(Appointment appointment, int index) {
         selectedIndex = index;
         selectedAppointment = appointment;
+        populateTypeCombo();
+        typeCombo.setValue(appointment.getType());
         populateStartTimes();
         populateEndTimes();
         contactNameCombo.setItems(DBContact.getContactNames());
@@ -95,7 +98,7 @@ public class AppointmentEditController{
         appointmentText.setText(String.valueOf(intAppointmentID));
         nameText.setText(selectedAppointment.getName());
         locationText.setText(selectedAppointment.getLocation());
-        typeText.setText(selectedAppointment.getType());
+        typeCombo.setValue(selectedAppointment.getType());
         customerText.setText(String.valueOf(selectedAppointment.getCustomerID()));
         userText.setText(String.valueOf(selectedAppointment.getUserID()));
         descriptionText.setText(selectedAppointment.getDescription());
@@ -113,7 +116,7 @@ public class AppointmentEditController{
             String title = nameText.getText();
             String description = descriptionText.getText();
             String location = locationText.getText();
-            String type = typeText.getText();
+            String type = typeCombo.getValue();
             String customerID = customerText.getText();
             String userID = userText.getText();
             int intUserID = Integer.parseInt(userID);
@@ -314,5 +317,11 @@ public class AppointmentEditController{
         } catch (SQLException e) {
             e.getStackTrace();
         }
+    }
+    private void populateTypeCombo() {
+        types.add("De-Briefing");
+        types.add("Planning Session");
+        types.add("Other");
+        typeCombo.setItems(types);
     }
 }

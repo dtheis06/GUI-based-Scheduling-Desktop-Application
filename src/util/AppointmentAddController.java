@@ -21,6 +21,7 @@ public class AppointmentAddController implements Initializable {
     private ObservableList<String> stringStartTimes = FXCollections.observableArrayList();
     private ObservableList<LocalTime> endTimes = FXCollections.observableArrayList();
     private ObservableList<String> stringEndTimes = FXCollections.observableArrayList();
+    private ObservableList<String> types = FXCollections.observableArrayList();
     private ZoneId z = ZoneId.systemDefault();
     private LocalDate ld = LocalDate.now();
     private ZonedDateTime zdt = ld.atStartOfDay(z);
@@ -47,7 +48,7 @@ public class AppointmentAddController implements Initializable {
     private TextField locationText;
 
     @FXML
-    private TextField typeText;
+    private ComboBox<String> typeCombo;
 
     @FXML
     private TextField customerText;
@@ -83,6 +84,7 @@ public class AppointmentAddController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         populateStartTimes();
         populateEndTimes();
+        populateTypeCombo();
         contactNameCombo.setItems(DBContact.getContactNames());
         endTimeCombo.setItems(stringEndTimes);
         startTimeCombo.setItems(stringStartTimes);
@@ -95,7 +97,7 @@ public class AppointmentAddController implements Initializable {
             String title = nameText.getText();
             String description = descriptionText.getText();
             String location = locationText.getText();
-            String type = typeText.getText();
+            String type = typeCombo.getValue();
             String customerID = customerText.getText();
             String userID = userText.getText();
             int intUserID = Integer.parseInt(userID);
@@ -246,6 +248,12 @@ public class AppointmentAddController implements Initializable {
         } catch (SQLException e) {
             e.getStackTrace();
         }
+    }
+    private void populateTypeCombo() {
+        types.add("De-Briefing");
+        types.add("Planning Session");
+        types.add("Other");
+        typeCombo.setItems(types);
     }
 }
 

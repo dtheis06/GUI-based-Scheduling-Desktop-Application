@@ -18,11 +18,16 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Country;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -30,6 +35,7 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
     static String user = "unknown";
     ZoneId id = ZoneId.systemDefault();
+    boolean error = false;
 
     @FXML
     private AnchorPane bottomWindow;
@@ -72,17 +78,28 @@ public class LoginController implements Initializable {
     public void setLogin(ActionEvent event) {
         String userName = username.getText();
         String passWord = password.getText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.dd.yyyy HH:mm:ss");
+        LocalDateTime time = LocalDateTime.now(ZoneOffset.UTC);
+        String sTime = formatter.format(time);
         try {
+            FileWriter writer = new FileWriter("login_activity",true);
+            BufferedWriter bw = new BufferedWriter(writer);
             String sql = "SELECT * FROM users WHERE User_Name = ? and Password = ?";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ps.setString(1,userName);
             ps.setString(2,passWord);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
+                error = true;
                 errorLabel.setVisible(true);
+                bw.write(sTime + "        User: " +userName + "       Action: " + "Unsuccessful login attempt" + "\n");
+                bw.flush();
+                bw.close();
             }
             else{
-                System.out.println("ZoneID" + id);
+                bw.write(sTime + "        User: " +userName + "       Action: " + "Successful login attempt" + "\n");
+                bw.flush();
+                bw.close();
                 user = username.getText();
                 Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Appointments.fxml"));
                 Scene scene = new Scene(parent);

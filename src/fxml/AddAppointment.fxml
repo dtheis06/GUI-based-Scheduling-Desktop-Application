@@ -81,11 +81,6 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="typeText" layoutX="196.0" layoutY="200.0">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
       <TextField fx:id="customerText" layoutX="196.0" layoutY="235.0">
          <font>
             <Font size="14.0" />
@@ -123,5 +118,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <ComboBox fx:id="typeCombo" layoutX="196.0" layoutY="203.0" prefHeight="25.0" prefWidth="173.0" promptText="Select" />
    </children>
 </AnchorPane>
