@@ -1,17 +1,9 @@
 package model;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import util.JDBC;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+
 
 /** Appointment Class */
-
 public class Appointment {
     private int appointmentID;
     private String name;
@@ -24,7 +16,7 @@ public class Appointment {
     private int userID;
     private int contactID;
 
-
+    /** Appointment Constructor */
     public Appointment (int appointmentID, String name, String description, String location,String type,
                         Timestamp startTime,Timestamp endTime,int customerID,int userID,int contactID) {
         this.appointmentID = appointmentID;
@@ -38,6 +30,7 @@ public class Appointment {
         this.userID = userID;
         this.contactID = contactID;
     }
+    /** Appointment getters & setters */
 
     public int getAppointmentID() {
         return appointmentID;

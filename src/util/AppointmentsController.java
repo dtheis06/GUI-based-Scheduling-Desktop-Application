@@ -28,13 +28,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** AppointmentsController Class - controller for Appointments.fxml and is the screen that shows up after logging in */
 public class AppointmentsController implements Initializable {
-    private static ZoneId z = ZoneId.systemDefault();
-    private static LocalDate ld = LocalDate.now();
-    private static ZonedDateTime zdt = ld.atStartOfDay(z);
-    private static ZoneOffset zoneOffset = zdt.getOffset();
-    private static int offSetInHours = zoneOffset.getTotalSeconds() / 3600;
-    private static int upcomingAppointmentID = 0;
 
     @FXML
     private TableView<Appointment> appointmentTable;
@@ -99,7 +94,10 @@ public class AppointmentsController implements Initializable {
     @FXML
     private Button logsButton;
 
-
+    /**
+     * Override Initializable
+     * This method occurs as soon as the scene is loaded
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appointmentTable.setItems(DBAppointment.getAllAppointments());
@@ -117,12 +115,12 @@ public class AppointmentsController implements Initializable {
 
     }
 
-
+    /** Configures the Logout Button - Takes you to the Login screen */
     public void setLogoutButton(ActionEvent event) {
         try {
-            Locale currentLocale = Locale.getDefault();
-            ResourceBundle bundle = ResourceBundle.getBundle("Properties.C195", currentLocale);
-            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"), bundle);
+            Locale currentLocale = Locale.getDefault(); //Gets language
+            ResourceBundle bundle = ResourceBundle.getBundle("Properties.C195", currentLocale); //Gets Resource Bundle
+            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"), bundle); //Shows login.fxml in your language
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
@@ -132,6 +130,7 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /** Configures add button */
     public void setAddButton(ActionEvent event) throws Exception {
         FXMLLoader fxmlLoader;
         fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/AddAppointment.fxml"));
@@ -143,7 +142,8 @@ public class AppointmentsController implements Initializable {
         refresh();
     }
 
-    public void setEditButton(ActionEvent event) throws Exception {
+    /** Configures edit button and sends Appointment information and index to AppointmentEditController*/
+    public void setEditButton() throws Exception {
         try {
             FXMLLoader fxmlLoader;
             fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/EditAppointment.fxml"));
@@ -162,6 +162,7 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /** Configures delete button */
     public void setDeleteButton() {
         try {
             Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
@@ -185,21 +186,23 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /** Configures setWeekRadio to filter appointments by only the next seven days */
     @FXML
     public void setWeekRadio() {
         appointmentTable.setItems(DBAppointment.getAppointmentsForWeek());
     }
 
+    /** Configures setMonthRadio to filter appointments by only the next month */
     @FXML
     public void setMonthRadio() {
         appointmentTable.setItems(DBAppointment.getAppointmentsForMonth());
     }
-
+    /** Configures setAllRadio to show all appointments. (Default) */
     @FXML
     public void setAllRadio() {
         appointmentTable.setItems(DBAppointment.getAllAppointments());
     }
-
+    /** Refreshes the table */
     public void refresh() {
         if (weekRadio.isSelected()) {
             appointmentTable.setItems(DBAppointment.getAppointmentsForWeek());
@@ -209,7 +212,7 @@ public class AppointmentsController implements Initializable {
             appointmentTable.setItems(DBAppointment.getAllAppointments());
         }
     }
-
+    /** Configures customers record button - takes to CustomerRecords.fxml screen */
     public void setCustomerRecordsButton(ActionEvent event) {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("/fxml/CustomerRecords.fxml"));
@@ -222,6 +225,7 @@ public class AppointmentsController implements Initializable {
             e.getStackTrace();
         }
     }
+    /** Checks if there is an appointment within the next 15 minutes */
     public static void upcomingAppointmentCheck() {
         try {
             String sql = "SELECT Start, Appointment_ID " +
@@ -259,6 +263,8 @@ public class AppointmentsController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /** Configures the logout button */
     public void setLogsButton(ActionEvent event) {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Logs.fxml"));

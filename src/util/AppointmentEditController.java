@@ -2,7 +2,6 @@ package util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Contact;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,10 +18,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
 
+/** AppointmentEditController Class - Controller for AppointmentEdit.fxml, the window that shows when you want to edit an appointment*/
 public class AppointmentEditController{
     private Appointment selectedAppointment;
     private int selectedIndex;
-    int incrementID = 0;
     private String contactName;
     private ObservableList<LocalTime> startTimes = FXCollections.observableArrayList();
     private ObservableList<String> stringStartTimes = FXCollections.observableArrayList();
@@ -83,6 +81,11 @@ public class AppointmentEditController{
     @FXML
     private Label errorLabel;
 
+    /** Imports the parameters from the AppointmentController
+     * and sets the textboxes and combos
+     * @param appointment - appointment we're making changes to
+     * @param index - index of the appointment in the combobox
+     */
     public void initData(Appointment appointment, int index) {
         selectedIndex = index;
         selectedAppointment = appointment;
@@ -108,10 +111,13 @@ public class AppointmentEditController{
         setEndTime();
     }
 
-    @FXML
-    public void setSaveButton(ActionEvent event) throws Exception {
+    /** Configures the Save Button */
+    public void setSaveButton() throws Exception {
         try {
-            error = false;
+            error = false; //Flag to see if an input is incompatible with database
+            errorLabel.setText("");//Resets error text
+
+            //Appointment field information from textboxes
             String user = LoginController.user;
             String title = nameText.getText();
             String description = descriptionText.getText();
@@ -119,38 +125,46 @@ public class AppointmentEditController{
             String type = typeCombo.getValue();
             String customerID = customerText.getText();
             String userID = userText.getText();
+            contactName = contactNameCombo.getSelectionModel().getSelectedItem();
+
+            //Parsed appointment field information for database
             int intUserID = Integer.parseInt(userID);
             intCustomerID = Integer.parseInt(customerID);
-            contactName = contactNameCombo.getSelectionModel().getSelectedItem();
             int contactID = DBContact.getContactIDFromContactName(contactName);
-            LocalDateTime ldtDate = LocalDateTime.now();
-            Timestamp tsDate = Timestamp.valueOf(ldtDate);
-            int startTimeIndex = startTimeCombo.getSelectionModel().getSelectedIndex();
-            int endTimeIndex = endTimeCombo.getSelectionModel().getSelectedIndex();
-            LocalDateTime ldtStart = LocalDateTime.of(datePicker.getValue(), startTimes.get(startTimeIndex));
-            LocalDateTime ldtEnd = LocalDateTime.of(datePicker.getValue(), endTimes.get(endTimeIndex));
-            start = Timestamp.valueOf(ldtStart);
-            end = Timestamp.valueOf(ldtEnd);
-            incrementID();
-            errorLabel.setText("");
+
+            //Date & Time stuff
+            LocalDateTime ldtDate = LocalDateTime.now();//Value for system default time of now
+            Timestamp tsDate = Timestamp.valueOf(ldtDate);//Converts ldtDate to timestamp
+            int startTimeIndex = startTimeCombo.getSelectionModel().getSelectedIndex();//logs the index of the selected item in the startTimeCombo
+            int endTimeIndex = endTimeCombo.getSelectionModel().getSelectedIndex();//logs the index of the selected item in the endTimeCombo
+            LocalDateTime ldtStart = LocalDateTime.of(datePicker.getValue(), startTimes.get(startTimeIndex));//Indexes align for the <String>combo and Observablelist<LocalTime>
+            LocalDateTime ldtEnd = LocalDateTime.of(datePicker.getValue(), endTimes.get(endTimeIndex));//Combines the value of the date picker with the index to create a LocalDateTime
+            start = Timestamp.valueOf(ldtStart);//Converts the ldt created in the last statement to a timestamp to log the start time in the database
+            end = Timestamp.valueOf(ldtEnd);//Converts the ldt created earlier to a timestamp to log the end time in the database
             overLappingAppointmentsCheck();
+
+            //Ensures the appointment doesn't end before or when it starts
             if(end.before(start) || end.equals(start)) {
                 errorLabel.setText("The appointment has to start before it ends!");
                 error = true;
             }
+            //Makes sure that required combos/textboxes are not empty
             if(title.isEmpty() || location.isEmpty() || type.isEmpty() || start.equals(null) || end.equals(null) ||
                     customerID.isEmpty() || userID.isEmpty() || contactName.isEmpty()) {
                 errorLabel.setText("Empty text field");
                 error = true;
             }
-            if(!DBUser.inRange(intUserID)) {
+            //Ensures that the userID input matches one in the database
+            if(!DBUser.isValid(intUserID)) {
                 errorLabel.setText("User ID doesn't exist");
                 error = true;
             }
-            if(!DBCustomer.inRange(intCustomerID)) {
+            //Ensures that the customerID input matches one in the database
+            if(!DBCustomer.isValid(intCustomerID)) {
                 errorLabel.setText("Customer ID doesn't exist");
                 error = true;
             }
+            //Updates appointment if no problems
             if(!error) {
                 String sql2 = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, " +
                         "Type = ?, Start = ?, End = ?, Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?, " +
@@ -171,9 +185,9 @@ public class AppointmentEditController{
                 ps.setInt(12, intUserID);
                 ps.setInt(13, contactID);
                 ps.setInt(14,selectedAppointment.getAppointmentID());
-                ps.execute();
+                ps.execute(); //Executes SQL
                 Stage stage = (Stage) saveButton.getScene().getWindow(); //gets the stage
-                stage.close(); // closes it
+                stage.close(); // closes stage
             }
         } catch(NumberFormatException e) { //handles NumberFormatException
             errorLabel.setText("Number Format Error " + e.getMessage());
@@ -187,19 +201,7 @@ public class AppointmentEditController{
         }
     }
 
-    private void incrementID() {
-        try {
-            String sql = "SELECT MAX(Appointment_ID) FROM appointments";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                incrementID = rs.getInt("Appointment_ID");
-                incrementID = incrementID + 1;
-            }
-        } catch (SQLException e) {
-            e.getStackTrace();
-        }
-    }
+    /** Sets Contact Name */
     public void setContactName() {
         try {
             String sql = "SELECT Contact_Name FROM Contacts WHERE Contact_ID = ?";
@@ -213,6 +215,8 @@ public class AppointmentEditController{
             e.printStackTrace();
         }
     }
+
+    /** Sets the startTimeCombo */
     public void setStartTime() {
         Timestamp timestamp = selectedAppointment.getStartTime();
         LocalTime time = timestamp.toLocalDateTime().toLocalTime();
@@ -227,6 +231,8 @@ public class AppointmentEditController{
         }
         startTimeCombo.setValue(sTime);
     }
+
+    /** Sets the endTimeCombo */
     public void setEndTime() {
         Timestamp timestamp = selectedAppointment.getEndTime();
         LocalTime time = timestamp.toLocalDateTime().toLocalTime();
@@ -241,6 +247,8 @@ public class AppointmentEditController{
         }
         endTimeCombo.setValue(sTime);
     }
+
+    /** Generates the start times for the <String>startTimeCombo */
     private void populateStartTimes() throws NumberFormatException {
         try{
             for (int i = 0; i < 56; i++) {
@@ -263,6 +271,8 @@ public class AppointmentEditController{
             error = true;
         }
     }
+
+    /** Generates the end times for the <String>startTimeCombo */
     private void populateEndTimes() throws NumberFormatException {
         try {
             for (int i = 0; i < 56; i++) {
@@ -286,15 +296,21 @@ public class AppointmentEditController{
             error = true;
         }
     }
+
+    /** Sets the date for the datePicker */
     public void setDate() {
         Timestamp timestamp = selectedAppointment.getEndTime();
         LocalDate date = timestamp.toLocalDateTime().toLocalDate();
         datePicker.setValue(date);
     }
+
+    /** Sets Cancel Button */
     public void setCancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow(); //gets the stage
         stage.close(); // closes it
     }
+
+    /** Checks to see if the Customer would have Over Lapping Appointments with the new appointment */
     private void overLappingAppointmentsCheck() {
         try {
             String sql = "SELECT Start, End, Appointment_ID FROM appointments " +
@@ -318,6 +334,8 @@ public class AppointmentEditController{
             e.getStackTrace();
         }
     }
+
+    /** Populates the <String>typeCombo with all the different types of appointments*/
     private void populateTypeCombo() {
         types.add("De-Briefing");
         types.add("Planning Session");

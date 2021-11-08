@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
+/** CustomerRecordsController class, controls CustomerRecords.fxml */
 public class CustomerRecordsController implements Initializable {
         Customer selectedCustomer;
 
@@ -90,6 +91,10 @@ public class CustomerRecordsController implements Initializable {
         @FXML
         private Button deleteAppointment;
 
+        /**
+         * Overrides Initializable
+         * This method sets the tables as soon as the stage is loaded
+         */
         @Override
         public void initialize(URL url, ResourceBundle rb) {
                 customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
@@ -109,6 +114,7 @@ public class CustomerRecordsController implements Initializable {
                 userColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
         }
 
+        /** Configures the back button and takes user back to the appointments screen */
         public void setBackButton(ActionEvent event) {
                 try {
                         Parent parent = FXMLLoader.load(getClass().getResource("/fxml/Appointments.fxml"));
@@ -120,12 +126,13 @@ public class CustomerRecordsController implements Initializable {
                         e.getStackTrace();
                 }
         }
-
+        /** Configures the selected customer's appointments to appear in the appointments table */
         public void onCustomerSelected() {
                 selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
                 appointmentTable.setItems(DBAppointment.getCustomerAppointments(selectedCustomer.getCustomerID()));
         }
 
+        /** Configures add customer button */
         public void setAddCustomer(ActionEvent event) {
                 try {
                         FXMLLoader fxmlLoader;
@@ -140,7 +147,7 @@ public class CustomerRecordsController implements Initializable {
                         e.getStackTrace();
                 }
         }
-
+        /** Configures edit customer button */
         public void setEditCustomer(ActionEvent event) throws Exception {
                 try {
                         FXMLLoader fxmlLoader;
@@ -160,7 +167,7 @@ public class CustomerRecordsController implements Initializable {
 
                 }
         }
-
+        /** Configures delete customer button */
         public void setDeleteCustomer() {
                 try {
                         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
@@ -170,11 +177,14 @@ public class CustomerRecordsController implements Initializable {
                         a.setHeaderText("Delete customer \"" + customerTable.getSelectionModel().getSelectedItem().getCustomerID() + "\"?");
                         a.setContentText("Are you sure you want to delete this Customer?");
                         a.showAndWait();
+
+                        //If customer has appointments
                         if (a.getResult() == ButtonType.OK && DBAppointment.hasAppointments(id)) {
                                 Alert b = new Alert(Alert.AlertType.ERROR);
                                 b.setContentText("Customer has appointments and therefore cannot be deleted!");
                                 b.showAndWait();
                         }
+                        //if no appointments
                         if (a.getResult() == ButtonType.OK && !DBAppointment.hasAppointments(id)) {
                                 String sql = "DELETE FROM customers WHERE Customer_ID = ?";
                                 PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -188,7 +198,7 @@ public class CustomerRecordsController implements Initializable {
                 } catch (SQLException e) {
                 }
         }
-
+        /** Configures add appointment button */
         public void setAddAppointment() throws Exception{
                 FXMLLoader fxmlLoader;
                 fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/AddAppointment.fxml"));
@@ -199,7 +209,7 @@ public class CustomerRecordsController implements Initializable {
                 stage.showAndWait();
                 refresh();
         }
-
+        /** Configures edit appointment button */
         public void setEditAppointment() throws Exception {
                 try {
                         FXMLLoader fxmlLoader;
@@ -218,6 +228,7 @@ public class CustomerRecordsController implements Initializable {
                 } catch (NullPointerException e) {
                 }
         }
+        /** Configures delete appointment button */
         public void setDeleteAppointment() throws Exception {
                 try {
                         Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
@@ -240,6 +251,7 @@ public class CustomerRecordsController implements Initializable {
                 } catch (SQLException e) {
                 }
         }
+        /** Refreshes both tables */
         public void refresh() {
                 customerTable.setItems(DBCustomer.getAllCustomers());
                 appointmentTable.setItems(DBAppointment.getCustomerAppointments(selectedCustomer.getCustomerID()));

@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+
+/** CustomerEditController class, controls EditCustomer.fxml */
 public class CustomerEditController {
     private Customer customer;
     private int index;
@@ -50,6 +52,11 @@ public class CustomerEditController {
     @FXML
     private Label errorLabel;
 
+    /** Imports the parameters from the AppointmentController
+     * and sets the textboxes and combos
+     * @param customer - customer we're making changes to
+     * @param index - index of the customer in the combobox
+     */
     public void initData(Customer customer, int index) {
         this.index = index;
         this.customer = customer;
@@ -68,30 +75,39 @@ public class CustomerEditController {
         phoneText.setText(customer.getPhoneNumber());
     }
 
+/** Configures cancel button */
     @FXML
     void setCancel(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow(); //gets the stage
         stage.close(); // closes it
     }
-
+    /** Configures save button */
     @FXML
     void setSaveButton(ActionEvent event) throws Exception {
         try{
-            error = false;
-            String user = LoginController.user;
+            error = false; //resets error
+            errorLabel.setText(""); //resets error text
+
+            //Customer field info for selectedCustomer
+            String user = LoginController.user; //Holds username of person logged in
             String name = nameText.getText();
             String address = addressText.getText();
             String postal = postalText.getText();
             String state = stateCombo.getSelectionModel().getSelectedItem();
-            int stateID = DBFirstLevelDivisions.getStateID(state);
             String phone = phoneText.getText();
+
+            int stateID = DBFirstLevelDivisions.getStateID(state); //State id from state name
+
+            //Date and Time stuff
             LocalDateTime ldtDate = LocalDateTime.now();
             Timestamp tsDate = Timestamp.valueOf(ldtDate);
-            errorLabel.setText("");
+
+            //Makes sure that required combos/textboxes are not empty
             if(name.isEmpty() || address.isEmpty() || postal.isEmpty() || state.equals(null) || phone.isEmpty() ) {
                 errorLabel.setText("Missing customer information!");
                 error = true;
             }
+            //Updates customer information if no problems
             if(!error) {
                 String sql2 = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, " +
                         "Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? " +
@@ -126,6 +142,7 @@ public class CustomerEditController {
         }
     }
 
+/** Sets stateComboBox with the states/provinces of the selected country */
     @FXML
     void setStateBox(ActionEvent event) {
         String country = countryCombo.getSelectionModel().getSelectedItem();

@@ -1,19 +1,18 @@
 package util;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.Appointment;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 
+/** DBLogs class */
 public class DBLogs {
 
+    /** Gets all appointments for the month
+     *
+     * @param year of the search
+     * @param month of the search
+     * @return count of appointments
+     */
     public static int countAppointmentsForMonth(int year, int month) {
         int count = 0;
         try{
@@ -32,6 +31,14 @@ public class DBLogs {
          }
         return count;
     }
+
+    /** Gets all appointments for the month by appointment type
+     *
+     * @param year of the search
+     * @param month of the search
+     * @param type of appointment
+     * @return count of appointments
+     */
     public static int countAppointmentsForMonth(int year, int month, String type) {
         int count = 0;
         try{
@@ -51,6 +58,13 @@ public class DBLogs {
         }
         return count;
     }
+
+    /** Counts new customers by month
+     *
+     * @param year of search
+     * @param month of search
+     * @return count of customers
+     */
     public static int countCustomersForMonth(int year,int month) {
         int count = 0;
         try{
@@ -69,6 +83,12 @@ public class DBLogs {
         }
         return count;
     }
+
+    /** Counts new customers created in selected year
+     *
+     * @param year of search
+     * @return count of customers for year
+     */
     public static int countCustomersForYear(int year) {
         int count = 0;
         try{

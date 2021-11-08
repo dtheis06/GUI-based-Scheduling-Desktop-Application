@@ -9,10 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
-import java.util.ArrayList;
 
+/** DBAppointment class */
 public class DBAppointment {
 
+    /** Gets all appointments from the database
+     * @return appointments, all the appointments from the database
+     */
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
@@ -40,6 +43,9 @@ public class DBAppointment {
         return appointments;
     }
 
+    /** Gets all appointments within the next seven days from the database
+     * @return appointments, all the appointments within the next seven days
+     */
     public static ObservableList<Appointment> getAppointmentsForWeek() {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
@@ -73,6 +79,9 @@ public class DBAppointment {
         return appointments;
     }
 
+    /** Gets all appointments within the next month from the database
+     * @return appointments, all the appointments within the next month
+     */
     public static ObservableList<Appointment> getAppointmentsForMonth() {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
@@ -106,6 +115,10 @@ public class DBAppointment {
         return appointments;
     }
 
+    /** Gets all appointments that contain the specified customerID
+     * @return appointments, all the appointments with customerID
+     * @param custID, the customerID of the appointments we want
+     */
     public static ObservableList<Appointment> getCustomerAppointments(int custID) {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
@@ -135,7 +148,10 @@ public class DBAppointment {
         }
         return appointments;
     }
-
+    /** Checks to see if any appointment has the customerID
+     * @return hasAps, true if appointments are found
+     * @param customerID, customerID we want to check that has appointments
+     */
     public static boolean hasAppointments(int customerID) {
         boolean hasAps = false;
         try {
@@ -154,6 +170,10 @@ public class DBAppointment {
         return hasAps;
     }
 
+    /** Returns all appointments that have the contactID
+     * @return appointments, all appointments that match
+     * @param contactID of the appointments we want
+     */
     public static ObservableList<Appointment> getContactAppointments(int contactID) {
         ObservableList<Appointment> appointments =  FXCollections.observableArrayList();
         try {

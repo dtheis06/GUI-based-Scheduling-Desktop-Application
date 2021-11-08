@@ -1,26 +1,19 @@
 package model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import util.JDBC;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-
+/** Contact Class */
 public class Contact {
-
     private int contactID;
     private String name;
     private String email;
 
+    /** Contact Constructor */
     public Contact(int contactID, String name, String email) {
         this.contactID = contactID;
         this.name = name;
         this.email = email;
     }
+    /** Contact Getters & Setters*/
 
     public int getContactID() {
         return contactID;

@@ -18,9 +18,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+/** CustomerAddController class, controls AddCustomer.fxml */
 public class CustomerAddController implements Initializable {
-    int incrementID = 0;
-    boolean error = false;
+    int incrementID = 0; //Default value to help generate CustomerID
+    boolean error = false; //flags if there is a problem
 
     @FXML
     private TextField idText;
@@ -52,36 +53,50 @@ public class CustomerAddController implements Initializable {
     @FXML
     private ComboBox<String> stateCombo;
 
+    /**
+     * Overrides Initializable
+     * This method occurs as soon as the stage is loaded
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         countryCombo.setItems(DBCountries.getAllCountries());
     }
 
+    /** Configures the cancel button */
     @FXML
     void setCancel(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow(); //gets the stage
         stage.close(); // closes it
     }
 
+    /** Configures the Save Button */
     @FXML
     void setSaveButton(ActionEvent event) {
         try{
-            error = false;
+            error = false; //resets error
+            errorLabel.setText(""); // resets error text
             incrementID();
-            String user = LoginController.user;
+
+            //Customer field info from textboxes/combos
+            String user = LoginController.user; //Holds username of person logged in to log who created customer
             String name = nameText.getText();
             String address = addressText.getText();
             String postal = postalText.getText();
             String state = stateCombo.getSelectionModel().getSelectedItem();
-            int stateID = DBFirstLevelDivisions.getStateID(state);
             String phone = phoneText.getText();
+
+            int stateID = DBFirstLevelDivisions.getStateID(state); //State id from state name
+
+            //Date and Time stuff
             LocalDateTime ldtDate = LocalDateTime.now();
             Timestamp tsDate = Timestamp.valueOf(ldtDate);
-            errorLabel.setText("");
+
+            //Makes sure that required combos/textboxes are not empty
             if(name.isEmpty() || address.isEmpty() || postal.isEmpty() || state.equals(null) || phone.isEmpty() ) {
                 errorLabel.setText("Missing customer information!");
                 error = true;
             }
+            //Creates a new customer and inserts the data into the database if no problems
             if(!error) {
                 String sql2 = "INSERT INTO customers(Customer_ID, Customer_Name,Address,Postal_Code,Phone," +
                         "Create_Date,Created_By,Last_Update,Last_Updated_By,Division_ID) " +
@@ -114,13 +129,15 @@ public class CustomerAddController implements Initializable {
             }
         }
 
+    /** Sets stateComboBox with the states/provinces of the selected country */
     @FXML
     void setStateBox(ActionEvent event) {
         String country = countryCombo.getSelectionModel().getSelectedItem();
         int countryID = DBCountries.getCountryID(country);
         stateCombo.setItems(DBFirstLevelDivisions.getStates(countryID));
-
     }
+
+    /** Generate the CustomerID by selecting the highest value Appointment ID and adding one to it.*/
     private void incrementID() {
         try {
             String sql = "SELECT MAX(Customer_ID) FROM customers";

@@ -22,7 +22,7 @@
       <TextField fx:id="username" layoutX="250.0" layoutY="197.0" prefHeight="45.0" prefWidth="311.0" AnchorPane.rightAnchor="167.0" />
       <PasswordField fx:id="password" layoutX="250.0" layoutY="269.0" prefHeight="45.0" prefWidth="311.0" />
       <Button fx:id="login" layoutX="250.0" layoutY="365.0" mnemonicParsing="false" onAction="#setLogin" prefHeight="35.0" prefWidth="148.0" text="%LoginButton" AnchorPane.rightAnchor="330.0" />
-      <Button fx:id="cancel" layoutX="421.0" layoutY="365.0" mnemonicParsing="false" onAction="#setCancel" prefHeight="35.0" prefWidth="148.0" text="%CancelButton" AnchorPane.rightAnchor="159.0" />
+      <Button fx:id="exit" layoutX="421.0" layoutY="365.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="148.0" text="%CancelButton" AnchorPane.rightAnchor="159.0" />
       <Label fx:id="errorLabel" layoutX="269.0" layoutY="331.0" text="%ErrorLabel" textFill="#8d0000">
          <font>
             <Font size="18.0" />

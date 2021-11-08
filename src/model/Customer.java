@@ -11,6 +11,8 @@ public class Customer {
     String phoneNumber;
     int divisionID;
 
+    /** Customers Constructor */
+
     public Customer(int customerID,String name, String address, String postalCode, String phoneNumber, int divisionID) {
         this.customerID = customerID;
         this.name = name;
@@ -19,6 +21,7 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.divisionID = divisionID;
     }
+    /** Getters & Setters */
     public int getCustomerID() {
         return customerID;
     }

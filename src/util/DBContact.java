@@ -7,8 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** DBContact class */
 public class DBContact {
 
+    /** Generates a list of all Contact_Names from the database
+     *
+     * @return contactNames ObservableList<String> of all Contact_Names
+     */
     public static ObservableList<String> getContactNames() {
         ObservableList<String> contactNames = FXCollections.observableArrayList();
         try{
@@ -24,6 +29,10 @@ public class DBContact {
         }
         return contactNames;
     }
+    /** Returns ContactID from inputted contactName
+     * @param contactName that you want the contactID of
+     * @return contactID of contactName
+     */
     public static int getContactIDFromContactName(String contactName) {
         int contactID = 999;
         try {

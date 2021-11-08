@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="631.0" prefWidth="414.0" style="-fx-background-color: #10141e;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="util.AppointmentAddController">
    <children>
       <Label layoutX="130.0" layoutY="37.0" text="Add Appointment" textFill="WHITE">
@@ -104,7 +105,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="cancelButton" cancelButton="true" layoutX="215.0" layoutY="573.0" mnemonicParsing="false" onAction="#setCancel" prefWidth="80.0" text="Cancel">
+      <Button fx:id="cancelButton" cancelButton="true" layoutX="215.0" layoutY="573.0" mnemonicParsing="false" prefWidth="80.0" text="Cancel">
          <font>
             <Font size="14.0" />
          </font></Button>

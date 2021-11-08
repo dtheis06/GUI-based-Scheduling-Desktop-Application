@@ -2,16 +2,17 @@ package util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Appointment;
 import model.Customer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
+/** DBAppointment class */
 public class DBCustomer {
 
+    /** Gets all appointments from the database
+     * @return appointments, all the appointments from the database */
     public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customers = FXCollections.observableArrayList();
         try{
@@ -34,12 +35,17 @@ public class DBCustomer {
         }
         return customers;
     }
-    public static boolean inRange(int value) {
+
+    /** Checks to see if value matches a Customer_ID in the database
+     * @param id id to check
+     * @return flag, true if there is a match
+     */
+    public static boolean isValid(int id) {
         boolean flag = false;
         try {
             String sql = "SELECT * FROM customers WHERE Customer_ID = ? ";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ps.setInt(1,value);
+            ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 flag = true;

@@ -2,7 +2,6 @@ package util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,12 +10,14 @@ import model.Appointment;
 
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
+/** LogsController class - controller for Logs.fxml*/
 public class LogsController implements Initializable {
-    int year = 2021;
+    LocalDate current_date = LocalDate.now();
+    int year = current_date.getYear();
 
     @FXML
     private ComboBox<String> selectLogCombo;
@@ -66,6 +67,10 @@ public class LogsController implements Initializable {
     @FXML
     private TableColumn<Appointment, Timestamp> endColumn;
 
+    /**
+     * Override Initializable
+     * This method occurs as soon as the scene is loaded
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -87,6 +92,7 @@ public class LogsController implements Initializable {
         selectContactCombo.setVisible(false);
         appointmentTable.setVisible(false);
     }
+    /** Populates the selectLogCombo Box */
     private void populateLogCombo() {
         ObservableList<String> logs = FXCollections.observableArrayList();
         logs.add("Appointments");
@@ -94,6 +100,7 @@ public class LogsController implements Initializable {
         logs.add("Customer");
         selectLogCombo.setItems(logs);
     }
+    /** Populates the selectYearCombo Box */
     private void populateYearCombo() {
         ObservableList<Integer> years = FXCollections.observableArrayList();
         int firstYear = 2020;
@@ -105,9 +112,14 @@ public class LogsController implements Initializable {
         selectYearCombo.setItems(years);
         selectYearCombo.setValue(currentYear);
     }
+    /** Populates the selectContactCombo box */
     private void populateContactCombo() {
         selectContactCombo.setItems(DBContact.getContactNames());
     }
+
+    /** Functionality to show a log based on what is selected in the
+     * comboboxes
+     */
     @FXML
     private void setLog(){
         year = selectYearCombo.getSelectionModel().getSelectedItem();
@@ -136,6 +148,7 @@ public class LogsController implements Initializable {
               setCustomerLog();
           }
     }
+    /** Log for the Appointments selection */
     private void setAppointmentsLog()  {
         textArea.setText("Appointments By Month:" + "\n" + "\n"
                 + "January    Total: " + DBLogs.countAppointmentsForMonth(year,1) + "    " + "Planning Sessions: " + DBLogs.countAppointmentsForMonth(year,1,"Planning Session") + "    "
@@ -165,12 +178,14 @@ public class LogsController implements Initializable {
 
 
     }
+    /** Log for the Schedule selection */
     private void setScheduleLog()  {
         String contact = selectContactCombo.getSelectionModel().getSelectedItem();
         int contactID = DBContact.getContactIDFromContactName(contact);
         appointmentTable.setItems(DBAppointment.getContactAppointments(contactID));
         }
 
+    /** Log for the Customers selection */
     private void setCustomerLog(){
         textArea.setText("New Customers by Month" + "\n" + "\n" +
                 "January: " + DBLogs.countCustomersForMonth(year, 1) + "\n" +
