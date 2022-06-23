@@ -1,4 +1,4 @@
-# GUI-based scheduling desktop application.
+# GUI-Based Scheduling Desktop Application.
 
 NOTE: The majority of this program's functions are dependent on connecting with a database. 
 
